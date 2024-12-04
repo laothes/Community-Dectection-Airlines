@@ -10,7 +10,10 @@ This repository implements various community detection algorithms in Python to a
 │   ├── airports.dat    # Airport information dataset
 │   └── routes.dat      # Flight routes dataset
 ├── echart/            # Dynamic visualization results
-│   └── *.html         # Interactive network visualizations
+│   ├── AirportBased/  # Visualizations for airport-based analysis
+│   │   └── *.html     # Interactive network visualizations
+│   └── RouteBased/    # Visualizations for route-based analysis
+│       └── *.html     # Interactive network visualizations
 ├── algorithms/
 │   ├── ihcs.py        # Iterated Highly Connected Subgraphs implementation
 │   └── lcma.py        # Local Clique Merging Algorithm implementation

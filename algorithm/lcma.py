@@ -5,7 +5,7 @@ import numpy as np
 from typing import List, Set, Dict, Tuple
 
 
-class LCMARouting:
+class LCMA:
     """
     Local Clique Merging Algorithm implementation for route analysis.
     Handles route data as dictionary with (origin, destination) tuples as keys.
@@ -25,7 +25,7 @@ class LCMARouting:
         self.cliques = []
         self.clusters = []
 
-    def create_route_graph(self, routes: Dict[Tuple[str, str], float]) -> nx.Graph:
+    def _create_route_graph(self, routes: Dict[Tuple[str, str], float]) -> nx.Graph:
         """
         Create a graph from route dictionary
 
@@ -44,7 +44,7 @@ class LCMARouting:
                 G.add_edge(origin, dest, weight=weight)
         return G
 
-    def find_maximal_cliques(self) -> List[Set[str]]:
+    def _find_maximal_cliques(self) -> List[Set[str]]:
         """
         Find all maximal cliques in the route graph
 
@@ -54,7 +54,7 @@ class LCMARouting:
         all_cliques = list(nx.find_cliques(self.graph))
         return [set(c) for c in all_cliques if len(c) >= self.min_clique_size]
 
-    def calculate_clique_similarity(self, clique1: Set[str], clique2: Set[str]) -> float:
+    def _calculate_clique_similarity(self, clique1: Set[str], clique2: Set[str]) -> float:
         """
         Calculate similarity between two cliques using weighted Jaccard coefficient
 
@@ -79,7 +79,7 @@ class LCMARouting:
 
         return 0.0
 
-    def merge_similar_cliques(self, cliques: List[Set[str]]) -> List[Set[str]]:
+    def _merge_similar_cliques(self, cliques: List[Set[str]]) -> List[Set[str]]:
         """
         Merge cliques that have similarity above threshold
 
@@ -94,7 +94,7 @@ class LCMARouting:
             merged = False
             for i, j in combinations(range(len(cliques)), 2):
                 if i < len(cliques) and j < len(cliques):
-                    similarity = self.calculate_clique_similarity(cliques[i], cliques[j])
+                    similarity = self._calculate_clique_similarity(cliques[i], cliques[j])
                     if similarity >= self.similarity_threshold:
                         cliques[i] = cliques[i].union(cliques[j])
                         cliques.pop(j)
@@ -102,7 +102,7 @@ class LCMARouting:
                         break
         return cliques
 
-    def analyze_cluster_connectivity(self, cluster: Set[str]) -> Dict:
+    def _analyze_cluster_connectivity(self, cluster: Set[str]) -> Dict:
         """
         Analyze connectivity patterns within a cluster
 
@@ -135,16 +135,16 @@ class LCMARouting:
         Returns:
             List of cluster information dictionaries
         """
-        self.graph = self.create_route_graph(routes)
-        self.cliques = self.find_maximal_cliques()
-        self.clusters = self.merge_similar_cliques(self.cliques)
+        self.graph = self._create_route_graph(routes)
+        self.cliques = self._find_maximal_cliques()
+        self.clusters = self._merge_similar_cliques(self.cliques)
 
         cluster_info = []
         for i, cluster in enumerate(self.clusters):
             info = {
                 'cluster_id': i,
                 'nodes': list(cluster),
-                'metrics': self.analyze_cluster_connectivity(cluster)
+                'metrics': self._analyze_cluster_connectivity(cluster)
             }
             cluster_info.append(info)
 
@@ -171,29 +171,6 @@ class LCMARouting:
 if __name__ == "__main__":
     # Sample route data as dictionary
     sample_routes = {
-        ('ORD', 'ATL'): 20,
-        ('ATL', 'ORD'): 19,
-        ('ORD', 'MSY'): 13,
-        ('HKT', 'BKK'): 13,
-        ('HKG', 'BKK'): 12,
-        ('CAN', 'HGH'): 12,
-        ('DOH', 'BAH'): 12,
-        ('ATL', 'MIA'): 12,
-        ('AUH', 'MCT'): 12,
-        ('BKK', 'HKG'): 12,
-        ('JFK', 'LHR'): 12,
-        ('MIA', 'ATL'): 12,
-        ('LHR', 'JFK'): 12,
-        ('LHR', 'LAX'): 11,
-        ('ATL', 'DFW'): 11,
-        ('KGL', 'EBB'): 11,
-        ('MSY', 'JFK'): 11,
-        ('MCT', 'AUH'): 11,
-        ('CNX', 'BKK'): 11,
-        ('CDG', 'JFK'): 11,
-        ('SFO', 'ATL'): 11
-    }
-    sample_routes = {
         ("JFK", "LAX") : 100,
         ("LAX", "SFO") : 80,
         ("SFO", "JFK") : 90,  # Forms a triangle
@@ -207,7 +184,7 @@ if __name__ == "__main__":
     }
 
     # Initialize and run LCMA
-    lcma = LCMARouting(similarity_threshold=0.3, min_clique_size=3)
+    lcma = LCMA(similarity_threshold=0.3, min_clique_size=3)
     clusters = lcma.find_route_clusters(sample_routes)
 
     # Print results

@@ -154,13 +154,13 @@ class IHCS:
 if __name__ == "__main__":
     # Create example graph
     G = nx.Graph()
-    edges = [
+    samole_edges = [
         (1, 2), (2, 3), (3, 1),  # triangle
         (4, 5), (5, 6), (6, 4),  # triangle
         (7, 8), (8, 7),  # edge
         (1, 4),  # connection between triangles
     ]
-    G.add_edges_from(edges)
+    G.add_edges_from(samole_edges)
     G.add_node(9)  # Add singleton node
 
     # Run IHCS

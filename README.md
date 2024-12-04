@@ -16,9 +16,16 @@ This project utilizes data from OpenFlights: https://openflights.org/data.php.
 
 ## Dependencies
 
-This project utilizes the following Python libraries:
+Core Dependencies:
 * networkx (for graph manipulation and algorithms)
+* pandas (for data manipulation)
+* numpy (for numerical operations)
 * pyecharts (for network visualization)
+
+Python Standard Library:
+* typing (for type hints)
+* itertools (for combinatorial operations)
+* collections (for specialized container datatypes)
 
 ## License
 

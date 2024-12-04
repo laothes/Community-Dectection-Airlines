@@ -96,13 +96,37 @@ The project features two custom algorithm implementations:
 
 ## Visualization Results
 
-The `echart` folder contains interactive HTML visualizations generated using PyeCharts. These visualizations include:
-- Network community visualizations
-- Geographic distribution of communities
-- Interactive node and edge exploration
-- Community relationship diagrams
+The `echart` folder contains interactive HTML visualizations organized by analysis type:
 
-To view the visualizations, open any `.html` file in the `echart` folder using a web browser.
+### Airport-Based Analysis (`echart/AirportBased/`)
+- Network visualizations based on airport connectivity
+- Communities detected using airport-centric approach
+- Geographic distribution of major airport hubs
+
+### Route-Based Analysis (`echart/RouteBased/`)
+- Network visualizations based on route frequency
+- Communities detected using route-centric approach
+- Frequent route pattern visualizations
+
+### Visualization Specifications and Known Issues
+
+1. Display Dimensions:
+   - Width: 1800px
+   - Height: 900px
+   - **Note**: Best viewed on large screens or displays with at least 1920×1080 resolution
+
+2. Known Issues:
+   - Some visualizations may display anomalies in the echarts rendering
+   - If visualizations appear distorted or incomplete, try:
+     * Using a modern web browser (Chrome, Firefox, or Edge recommended)
+     * Viewing in fullscreen mode
+     * Zooming out if needed
+     * Refreshing the page
+
+3. Viewing Instructions:
+   - Open any `.html` file in the respective folders using a web browser
+   - Allow a few moments for large visualizations to fully render
+   - Use browser zoom controls to adjust the view if needed
 
 ## License
 

@@ -53,6 +53,10 @@ Python Standard Library:
 * itertools (for combinatorial operations)
 * collections (for specialized container datatypes)
 
+You can install all required packages using:
+```bash
+pip install -r requirements.txt
+```
 
 ## Analysis Notebooks
 
@@ -109,3 +113,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 * OpenFlights.org for providing the airport network dataset
 * NetworkX developers for the graph analysis library
 * PyeCharts team for the visualization tools
+  

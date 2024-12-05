@@ -1,5 +1,4 @@
 import networkx as nx
-from collections import defaultdict
 from itertools import combinations
 import numpy as np
 from typing import List, Set, Dict, Tuple, Union
@@ -193,20 +192,20 @@ class LCMA:
 if __name__ == "__main__":
     # Sample route data as dictionary
     sample_routes = {
-        ("JFK", "LAX") : 100,
-        ("LAX", "SFO") : 80,
-        ("SFO", "JFK") : 90,  # Forms a triangle
-        ("ORD", "DFW") : 70,
-        ("DFW", "MIA") : 60,
-        ("MIA", "ORD") : 65,  # Forms another triangle
-        ("LHR", "CDG") : 85,
-        ("CDG", "AMS") : 75,
-        ("AMS", "LHR") : 80,  # European triangle
-        ("JFK", "LHR") : 95,  # Connection between clusters
+        ("JFK", "LAX"): 100,
+        ("LAX", "SFO"): 80,
+        ("SFO", "JFK"): 90,  # Forms a triangle
+        ("ORD", "DFW"): 70,
+        ("DFW", "MIA"): 60,
+        ("MIA", "ORD"): 65,  # Forms another triangle
+        ("LHR", "CDG"): 85,
+        ("CDG", "AMS"): 75,
+        ("AMS", "LHR"): 80,  # European triangle
+        ("JFK", "LHR"): 95,  # Connection between clusters
     }
 
     # Initialize and run LCMA
-    lcma = LCMA(similarity_threshold=0.3, min_clique_size=3,method = 'undirected')
+    lcma = LCMA(similarity_threshold=0.3, min_clique_size=3, method='undirected')
     clusters = lcma.find_route_clusters(sample_routes)
 
     # Print results

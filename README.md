@@ -4,10 +4,6 @@ This repository implements various community detection algorithms in Python to a
 
 ## Project Structure
 
-[Previous sections remain the same until Project Structure]
-
-## Project Structure
-
 ```
 .
 ├── data/
@@ -21,7 +17,8 @@ This repository implements various community detection algorithms in Python to a
 ├── algorithms/
 │   ├── ihcs.py        # Iterated Highly Connected Subgraphs implementation
 │   ├── lcma.py        # Local Clique Merging Algorithm implementation
-│   └── snn.py         # Shared Near Neighbor implementation
+│   ├── snn.py         # Shared Near Neighbor implementation
+│   └── divisive.py    # Modified Girvan-Newman algorithm implementation
 ├── notebooks/
 │   ├── community-detection_airportbased.ipynb    # Airport-based analysis
 │   └── community-detection_routebased.ipynb      # Route-based analysis
@@ -41,6 +38,7 @@ This project utilizes data from OpenFlights: https://openflights.org/data.php.
 * **Shared Near Neighbor (SNN)**: Groups nodes based on the number of shared neighbors they have.
 * **Iterated Highly Connected Subgraphs (IHCS)**: Iteratively identifies and merges highly connected subgraphs.
 * **Local Clique Merging Algorithm (LCMA)**: Progressively merges local cliques to form larger communities.
+* **Girvan-Newman Algorithm**: A divisive hierarchical clustering algorithm based on edge betweenness centrality, adapted specifically for airport networks.
 
 ## Dependencies
 
@@ -89,7 +87,7 @@ Both approaches allow for adjusting the threshold n to analyze different network
 
 ## Independent Algorithm Implementations
 
-The project features three custom algorithm implementations:
+The project features four custom algorithm implementations:
 
 1. `ihcs.py` - Iterated Highly Connected Subgraphs
    - Iteratively identifies dense subgraphs
@@ -105,6 +103,12 @@ The project features three custom algorithm implementations:
    - Groups nodes based on shared neighbor counts
    - Identifies communities through neighbor similarity
    - Effective for finding naturally clustered airports
+
+4. `divisive.py` - Modified Girvan-Newman Algorithm
+   - Based on NetworkX's girvan_newman implementation
+   - Customized for airport network analysis
+   - Uses edge betweenness centrality to identify community boundaries
+   - Includes additional geographical considerations for airport communities
 
 ## Visualization Results
 
@@ -141,4 +145,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 * OpenFlights.org for providing the airport network dataset
 * NetworkX developers for the graph analysis library
 * PyeCharts team for the visualization tools
-  

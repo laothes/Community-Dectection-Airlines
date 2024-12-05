@@ -3,6 +3,7 @@ import numpy as np
 import networkx as nx
 from typing import Dict, Tuple
 
+
 class SSN:
     def __init__(self, snn_routes: Dict[Tuple[str, str], int], method='mixed'):
         '''
@@ -86,6 +87,7 @@ class SSN:
         # Find connected components (clusters)
         self.clusters = {i: list(c) for i, c in enumerate(nx.connected_components(G))}
         return self.clusters
+
 
 if __name__ == '__main__':
     sample_routes = {

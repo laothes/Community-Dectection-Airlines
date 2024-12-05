@@ -2,30 +2,42 @@ import networkx as nx
 from collections import defaultdict
 from itertools import combinations
 import numpy as np
-from typing import List, Set, Dict, Tuple
+from typing import List, Set, Dict, Tuple, Union
 
 
 class LCMA:
     """
-    Local Clique Merging Algorithm implementation for route analysis.
-    Handles route data as dictionary with (origin, destination) tuples as keys.
+    Local Clique Merging Algorithm (LCMA) for analyzing and clustering route networks.
+
+    This class implements a graph-based approach to identify and analyze clusters of highly
+    connected routes in transportation networks. It uses clique detection and merging
+    strategies to identify meaningful route groups while considering edge weights.
+
+    The algorithm works in three main steps:
+    1. Convert route data into a weighted graph
+    2. Identify maximal cliques in the graph
+    3. Merge similar cliques based on a similarity threshold
     """
 
-    def __init__(self, similarity_threshold: float = 0.5, min_clique_size: int = 3):
+    def __init__(self, similarity_threshold: float = 0.5, min_clique_size: int = 3, method='undirected'):
         """
         Initialize LCMA router
 
         Args:
             similarity_threshold: Threshold for merging cliques (0.0 to 1.0)
             min_clique_size: Minimum size for considering a clique
+            method: Graph type to use for analysis. Options are:
+                - 'undirected': Treats routes as bidirectional
+                - 'directed': Preserves route directionality
         """
         self.similarity_threshold = similarity_threshold
         self.min_clique_size = min_clique_size
         self.graph = None
         self.cliques = []
         self.clusters = []
+        self.method = method
 
-    def _create_route_graph(self, routes: Dict[Tuple[str, str], float]) -> nx.Graph:
+    def _create_route_graph(self, routes: Dict[Tuple[str, str], float]) -> Union[nx.Graph, nx.DiGraph]:
         """
         Create a graph from route dictionary
 
@@ -33,9 +45,14 @@ class LCMA:
             routes: Dictionary with (origin, destination) tuples as keys and weights as values
 
         Returns:
-            NetworkX graph representation
+        NetworkX graph, either:
+        - nx.Graph if self.method == 'undirected'
+        - nx.DiGraph if self.method == 'directed'
         """
-        G = nx.Graph()
+        if self.method == 'undirected':
+            G = nx.Graph()
+        if self.method == 'directed':
+            G = nx.DiGraph()
         for (origin, dest), weight in routes.items():
             # Add edge with weight. If edge exists, use maximum weight
             if G.has_edge(origin, dest):
@@ -51,7 +68,11 @@ class LCMA:
         Returns:
             List of sets containing nodes in each clique
         """
-        all_cliques = list(nx.find_cliques(self.graph))
+        if self.method == 'undirected':
+            all_cliques = list(nx.find_cliques(self.graph))
+        if self.method == 'directed':
+            # Convert to undirected for clique finding, as cliques are undefined in directed graphs
+            all_cliques = list(nx.find_cliques(self.graph.to_undirected()))
         return [set(c) for c in all_cliques if len(c) >= self.min_clique_size]
 
     def _calculate_clique_similarity(self, clique1: Set[str], clique2: Set[str]) -> float:
@@ -62,8 +83,9 @@ class LCMA:
             clique1: First clique
             clique2: Second clique
 
-        Returns:
-            Similarity score between 0 and 1
+        Similarity score between 0 and 1, where:
+            - 0 indicates completely distinct cliques
+            - 1 indicates identical cliques with maximum edge weights
         """
         intersection = len(clique1.intersection(clique2))
         union = len(clique1.union(clique2))
@@ -184,7 +206,7 @@ if __name__ == "__main__":
     }
 
     # Initialize and run LCMA
-    lcma = LCMA(similarity_threshold=0.3, min_clique_size=3)
+    lcma = LCMA(similarity_threshold=0.3, min_clique_size=3,method = 'undirected')
     clusters = lcma.find_route_clusters(sample_routes)
 
     # Print results

@@ -1,6 +1,10 @@
-# Community Detection in Airport Networks - unfinished
+# Community Detection in Airport Networks
 
 This repository implements various community detection algorithms in Python to analyze airport networks. The algorithms aim to identify clusters of airports with high connectivity within the network.
+
+## Project Structure
+
+[Previous sections remain the same until Project Structure]
 
 ## Project Structure
 
@@ -16,7 +20,8 @@ This repository implements various community detection algorithms in Python to a
 │       └── *.html     # Interactive network visualizations
 ├── algorithms/
 │   ├── ihcs.py        # Iterated Highly Connected Subgraphs implementation
-│   └── lcma.py        # Local Clique Merging Algorithm implementation
+│   ├── lcma.py        # Local Clique Merging Algorithm implementation
+│   └── snn.py         # Shared Near Neighbor implementation
 ├── notebooks/
 │   ├── community-detection_airportbased.ipynb    # Airport-based analysis
 │   └── community-detection_routebased.ipynb      # Route-based analysis
@@ -84,15 +89,22 @@ Both approaches allow for adjusting the threshold n to analyze different network
 
 ## Independent Algorithm Implementations
 
-The project features two custom algorithm implementations:
+The project features three custom algorithm implementations:
 
 1. `ihcs.py` - Iterated Highly Connected Subgraphs
    - Iteratively identifies dense subgraphs
    - Merges subgraphs based on connectivity thresholds
+   - Optimized for airport network analysis
 
 2. `lcma.py` - Local Clique Merging Algorithm
    - Identifies and merges local cliques
    - Progressive community formation
+   - Specifically adapted for airport connectivity patterns
+
+3. `snn.py` - Shared Near Neighbor
+   - Groups nodes based on shared neighbor counts
+   - Identifies communities through neighbor similarity
+   - Effective for finding naturally clustered airports
 
 ## Visualization Results
 
@@ -107,6 +119,18 @@ The `echart` folder contains interactive HTML visualizations organized by analys
 - Network visualizations based on route frequency
 - Communities detected using route-centric approach
 - Frequent route pattern visualizations
+
+### Visualization Suggestions
+
+1. Display Dimensions:
+   - Width: 1600px
+   - Height: 800px
+   - **Note**: Best viewed on large screens or displays with at least 1920×1080 resolution
+
+2. Viewing Instructions:
+   - Open any `.html` file in the respective folders using a web browser
+   - Allow a few moments for large visualizations to fully render
+   - Use browser zoom controls to adjust the view if needed
 
 ## License
 

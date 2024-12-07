@@ -23,8 +23,9 @@ def girvan_newman_(G, most_valuable_edge=None):
 
     Note:
         This is a modified version of the original NetworkX implementation with:
-        1. Support for directed graphs (converts to undirected internally for component analysis)
-        2. Returns information about removed edges for each iteration
+        1. Support for directed weighted graphs (converts to undirected internally for component analysis), as there are different weights for back and dorth routes
+        2. Use Dijkstra's algorithm with the 'weight' edge attribute
+        3. Returns information about removed edges for each iteration
     """
     if G.number_of_edges() == 0:
         yield tuple(nx.connected_components(G))
@@ -39,7 +40,10 @@ def girvan_newman_(G, most_valuable_edge=None):
             """
             # We have guaranteed that the graph is non-empty, so this
             # dictionary will never be empty.
-            betweenness = nx.edge_betweenness_centrality(G)
+
+            # Calculate weighted betweenness centrality using edge weights
+            # weight='weight' tells NetworkX to use Dijkstra's algorithm with the 'weight' edge attribute
+            betweenness = nx.edge_betweenness_centrality(G, weight = 'weight')
             return max(betweenness, key=betweenness.get)
 
     # The copy of G here must include the edge weight data.
@@ -71,7 +75,6 @@ def _without_most_central_edges(G, most_valuable_edge):
     Note:
         For directed graphs, component analysis is performed on the undirected version,
         but edge removal is done on the original directed graph.
-
     """
     # Get initial number of components (using undirected version for directed graphs)
     original_num_components = nx.number_connected_components(G.to_undirected())
@@ -105,16 +108,9 @@ if __name__ == '__main__':
     weighted_edges = [(u, v, weight) for (u, v), weight in edges.items()]
     G.add_weighted_edges_from(weighted_edges)
 
-
-    def most_valuable_edge(G):
-        # use Dijkstra's algorithm with the 'weight' edge attribute
-        centrality = nx.edge_betweenness_centrality(G, weight="weight")
-        return max(centrality, key=centrality.get)
-
-
     # stop when the number of communities is greater than *k*
     k = 5
-    comp = girvan_newman_(G, most_valuable_edge=most_valuable_edge)
+    comp = girvan_newman_(G)
     limited = itertools.takewhile(lambda c: len(c[0]) <= k, comp)
     for communities in limited:
         print(f'Number of communities: {len(communities[0])}')
